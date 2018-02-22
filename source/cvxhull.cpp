@@ -22,8 +22,21 @@ using namespace std;
 #define RIGHT 1
 #define ON_LINE 0
 
+// Defining Point type as pair of integers and Line as pair of Point
 #define Point pair<int, int>
 #define Line pair<Point, Point>
+/* 
+ * Example:
+ * Point P = {x, y}
+ * Line L = {{x1, y1}, {x2, y2}}
+ * Access:
+ * x = P.first;
+ * y = P.second;
+ * x1 = L.first.first;
+ * y1 = L.first.second;
+ * x2 = L.second.first;
+ * y2 = L.second.second;
+*/
 
 /*** Global Variables ***/
 // Global variables are used due to constraints of display callback function

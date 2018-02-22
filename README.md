@@ -7,12 +7,12 @@ This project contains source codes and libraries which are located in `source` d
 ```
 convex-hull-visualization/
 ├── source/
-|   ├── visualizer/
-|   |   ├── visualizer.hpp
-|   |   ├── visualizer.cpp
-|   |   └── CMakeLists.txt
-|   ├── cvxhull.cpp
-|   └── gltest.cpp
+│   ├── visualizer/
+│   │   ├── visualizer.hpp
+│   │   ├── visualizer.cpp
+│   │   └── CMakeLists.txt
+│   ├── cvxhull.cpp
+│   └── gltest.cpp
 ├── CMakeLists.txt
 └── build.sh
 ```
