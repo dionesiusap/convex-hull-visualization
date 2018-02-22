@@ -44,7 +44,7 @@ for 0 parameters or
 $ ./cvxhull n #replace n with any integer > 0
 ```
 The execution will create a window visualizing the convex hull solution. Press `esc` while the window is active or `ctrl+C` in command line to destroy the window and close the program.
-### Program Runtime Example
+## Program Runtime Example
 An example of program runtime.
 ```
 $ ./cvxhull 10
