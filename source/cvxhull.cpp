@@ -203,8 +203,17 @@ int main(int argc, char *argv[]) {
     }
 
     for (int i = 0; i < n; i++) {
+        Point p;
         int x = (rand() % 201) - 100;
         int y = (rand() % 201) - 100;
+        for (int j = 0; j < i; j++) {
+            if (p == set_of_points[j]) {
+                x = (rand() % 201) - 100;
+                y = (rand() % 201) - 100;
+                break;
+            }
+        }
+        p = {x,y};
         set_of_points.push_back({x, y});
     }
     
