@@ -142,7 +142,7 @@ void PrintHull(vector<Line> hull) {
 /*** VISUALIZER GRAPHICS ***/
 void display(void) {
 // callback function for drawing graphics
-    
+
     // clears buffer
     glClear(GL_COLOR_BUFFER_BIT);
 
@@ -181,7 +181,7 @@ void display(void) {
 // }
 
 /*** MAIN ***/
-int main(int argc, char *argv[]) {
+int main(int argc, char **argv) {
     int n; // number of points
 
     // seed for random integer generation
@@ -234,15 +234,7 @@ int main(int argc, char *argv[]) {
     cout << "\nExecution time: " << (end_time - start_time)/double(CLOCKS_PER_SEC) * 1000 << " ms" << endl;
 
     // visualize Result in a window
-    glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
-    glutInitWindowSize(500, 523);
-    glutInitWindowPosition(0, 0);
-    glutCreateWindow("Convex Hull Visualization");
-    InitializeVisualizer(255.0, 255.0, 255.0, 100, 5);
-    glutDisplayFunc(display);
-    glutKeyboardFunc(handleKeypress);
-    glutMainLoop();
+    ShowWindow(argc, argv, 500, 523, 255.0, 255.0, 255.0, 100, 5, display);
 
     return 0;
 }

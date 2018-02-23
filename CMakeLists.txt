@@ -7,7 +7,7 @@ find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)
 
 include_directories("${PROJECT_SOURCE_DIR}/source")
- include_directories("${PROJECT_SOURCE_DIR}/source/visualizer")
+include_directories("${PROJECT_SOURCE_DIR}/source/visualizer")
 
 add_subdirectory(source/visualizer)
 

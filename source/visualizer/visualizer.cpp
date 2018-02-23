@@ -1,3 +1,12 @@
+/* -------------------------
+ * VISUALIZER MODULE
+ * FILE         : visualizer.cpp
+ * Description  : Implementation of visualizer.hpp (see visualizer.hpp description).
+ * Usage        : -
+ * Author       : Dionesius Agung Andika P / 13516043
+ * ---Institut Teknologi Bandung, 2018---
+*/
+
 #include "visualizer.hpp"
 
 void InitializeVisualizer(float r, float g, float b, float size, float offset)
@@ -124,4 +133,16 @@ void handleKeypress(unsigned char key, int x, int y){
     if (key==27) {
         exit(0);
     }
+}
+
+void ShowWindow(int argc, char** argv, int width, int height, float r, float g, float b, float size, float offset, void (*callback)()) {
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+    glutInitWindowSize(width, height);
+    glutInitWindowPosition(0, 0);
+    glutCreateWindow("Convex Hull Visualizer");
+    InitializeVisualizer(r, g, b, size, offset);
+    glutDisplayFunc(callback);
+    glutKeyboardFunc(handleKeypress);
+    glutMainLoop();
 }
