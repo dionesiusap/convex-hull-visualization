@@ -70,3 +70,13 @@ EDGES OF CONVEX HULL POLYGON:
 
 Execution time: 0.066 ms
 ```
+
+## Final Statements
+### Contributors
+* Dionesius Agung/13516043 - Institut Teknologi Bandung
+### About This Project
+This project was initially created for IF2211 - Algorithm Strategies course assignment, Computer Science Bachelor's Program Institut Teknologi Bandung.
+### Further Works
+If I have time I'd like to expand this project into a library for computational mathematics, mainly for visualizing convex hull, Voronoi diagrams, and Delaunay triangulation.  
+I'd also like to expand the problem domain into 3 dimensional space convex hull, Voronoi cells, and Delaunay tetrahedralization.  
+Contact me if you'd like to inquire for help, contribute to this project, or for some other reasons.

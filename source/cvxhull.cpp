@@ -40,12 +40,12 @@ using namespace std;
 
 /*** Global Variables ***/
 // Global variables are used due to constraints of display callback function
-vector<Line> hull;
-int n;
-vector<Point> set_of_points;
+vector<Line> hull; // lines which construct convex hull are stored in this vector
+vector<Point> set_of_points; // points are stored in this vector
 
 /*** QUICKHULL ALGORITHM ***/
 int FindPosition(Line line, Point p) {
+// Finding point position relative to base line
     int side = (p.second - line.first.second) * (line.second.first - line.first.first) - (line.second.second - line.first.second) * (p.first - line.first.first);
 
     if (side > 0) {
@@ -60,21 +60,24 @@ int FindPosition(Line line, Point p) {
 }
 
 int SquareDistance(Point p1, Point p2){
+// calculating the squared distance between points p1 and p2
     return (pow((p2.second - p1.second), 2) + pow((p2.first - p1.first), 2));
 }
 
 int XLineDistance(Line line, Point p) {
+// calculating a factor of distance between a line and a point
     return abs((p.second - line.first.second) * (line.second.first - line.first.first) -
                (line.second.second - line.first.second) * (p.first - line.first.first));
 }
 
 void QuickHull(vector<Point> set_of_points, int n, Line line, int pos) {
-    int idx_max = -1;
-    int max_distance = 0;
-
+// recursive function for quick hull algorithm
     Point left_point = line.first;
     Point right_point = line.second;
 
+    // finding the farthest point beyond the baseline as a new hull point
+    int idx_max = -1;
+    int max_distance = 0;
     for (int i = 0; i < n; i++) {
         int temp_dist = XLineDistance(line, set_of_points[i]);
         if (FindPosition(line, set_of_points[i]) == pos && temp_dist > max_distance) {
@@ -83,23 +86,30 @@ void QuickHull(vector<Point> set_of_points, int n, Line line, int pos) {
         }
     }
 
+    // if no point is found then the baseline is one of the hull edge
     if (idx_max == -1) {
         hull.push_back(line);
         return;
     }
-    
+
+    /* recursively finding the hull line */
     Line left = {set_of_points[idx_max], left_point};
     Line right = {set_of_points[idx_max], right_point};
+    // quick hull for the line on the left of the current baseline
     QuickHull(set_of_points, n, left, -FindPosition(left, right_point));
+    // quick hull for the line on the right of the current baseline
     QuickHull(set_of_points, n, right, -FindPosition(right, left_point));
 }
 
 void InitializeQuickHull(vector<Point> set_of_points, int n) {
+// initializing the quickhull recursive algorithm; calling the first QuickHull function
+    // if there are less than 3 points convex hull cannot be made
     if (n < 3) {
         cout << "No convex hull can be found." << endl;
         return;
     }
 
+    // finding leftmost and rightmost point in the set as baseline
     int min_x = 0;
     int max_x = 0;
     for (int i = 1; i < n; i++) {
@@ -110,13 +120,14 @@ void InitializeQuickHull(vector<Point> set_of_points, int n) {
             max_x = i;
         }
     }
-    Line separator = {set_of_points[min_x], set_of_points[max_x]};
-
-    QuickHull(set_of_points, n, separator, RIGHT);
-    QuickHull(set_of_points, n, separator, LEFT);
+    Line baseline = {set_of_points[min_x], set_of_points[max_x]};
+    QuickHull(set_of_points, n, baseline, RIGHT);
+    QuickHull(set_of_points, n, baseline, LEFT);
 }
 
 void PrintHull(vector<Line> hull) {
+// printing edges of convex hull in the form of point pairs
+    // e.g. {(x1,y1),(x2,y2)}
     if (hull.size() > 1) {
         cout << "EDGES OF CONVEX HULL POLYGON: " << endl;
         for (int i = 0; i < hull.size(); i++) {
@@ -130,54 +141,65 @@ void PrintHull(vector<Line> hull) {
 
 /*** VISUALIZER GRAPHICS ***/
 void display(void) {
+// callback function for drawing graphics
+    
+    // clears buffer
     glClear(GL_COLOR_BUFFER_BIT);
 
-    // Print header
+    // prints header
     PrintHeader("CONVEX HULL VISUALIZATION", -48, 110);
 
-    // Print info
-    PrintText("n = " + to_string(n), -100, -105);
+    // prints info
+    PrintText("n = " + to_string(set_of_points.size()), -100, -105);
 
-    // Initializing grid
+    // initializing grid
     DrawGrid(100, 5, 10);
 
-    // Draw set of points
+    // drawing set of points
     glColor3f(1.0, 0.0, 0.0);
     glPointSize(5.0);
     glBegin(GL_POINTS);
-      for (int i = 0; i < n; i++) {
-          glVertex2i(set_of_points[i].first, set_of_points[i].second);
-        //   cout << set_of_points[i].first <<"," << set_of_points[i].second << endl;
-      }
+    for (int i = 0; i < set_of_points.size(); i++) {
+        glVertex2i(set_of_points[i].first, set_of_points[i].second);
+    }
     glEnd();
 
-    // Draw convex hull lines
+    // drawing convex hull lines
     glColor3f(0.0, 0.0, 1.0);
     for (int i = 0; i < hull.size(); i++) {
-        // cout << "(" << hull[i].first.first << "," << hull[i].first.second << ")(" << hull[i].second.first << "," << hull[i].second.second << ")" << endl;
         glBegin(GL_LINES);
-          glVertex2i(hull[i].first.first, hull[i].first.second);
-          glVertex2i(hull[i].second.first, hull[i].second.second);
+        glVertex2i(hull[i].first.first, hull[i].first.second);
+        glVertex2i(hull[i].second.first, hull[i].second.second);
         glEnd();
     }
 
     glFlush();
 }
 
-string PointToString(Point p) {
-    return "(" + to_string(p.first) + "," + to_string(p.second) + ")";
-}
+// string PointToString(Point p) {
+//     return "(" + to_string(p.first) + "," + to_string(p.second) + ")";
+// }
 
 /*** MAIN ***/
 int main(int argc, char *argv[]) {
+    int n; // number of points
+
+    // seed for random integer generation
     srand(time(NULL));
 
+    // checks number of arguments
     if (argc == 2) {
+        // if 1 argument input, n of points = argument
         n = atoi(argv[1]);
     }
-    else {
+    else if (argc == 1) {
+        // if no argument input, prompt user to input n of points
         cout << "Input n: ";
         cin >> n;
+    }
+    else {
+        cerr << "Error: too many arguments.\n";
+        return -1;
     }
 
     for (int i = 0; i < n; i++) {
@@ -186,13 +208,14 @@ int main(int argc, char *argv[]) {
         set_of_points.push_back({x, y});
     }
     
+    // printing points in command line
     cout << "POINTS:" << endl;
     for (int i = 0; i < n; i++) {
         cout << i + 1 << ". (" << set_of_points[i].first << "," << set_of_points[i].second << ")" << endl;
     }
     cout << endl;
 
-    // Quick Hull
+    // quickhull algorithm
     auto start_time = clock(); // starts the timer
 
     InitializeQuickHull(set_of_points, n);
@@ -201,7 +224,7 @@ int main(int argc, char *argv[]) {
     auto end_time = clock(); // stops the timer
     cout << "\nExecution time: " << (end_time - start_time)/double(CLOCKS_PER_SEC) * 1000 << " ms" << endl;
 
-    // Visualize Result
+    // visualize Result in a window
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
     glutInitWindowSize(500, 523);
