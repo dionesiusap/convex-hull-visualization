@@ -91,38 +91,40 @@ void QuickHull(vector<Point> set_of_points, int n, Line line, int pos) {
         hull.push_back(line);
         return;
     }
-
-    /* recursively finding the hull line */
-    Line left = {set_of_points[idx_max], left_point};
-    Line right = {set_of_points[idx_max], right_point};
-    // quick hull for the line on the left of the current baseline
-    QuickHull(set_of_points, n, left, -FindPosition(left, right_point));
-    // quick hull for the line on the right of the current baseline
-    QuickHull(set_of_points, n, right, -FindPosition(right, left_point));
+    else {
+        /* recursively finding the hull line */
+        Line left = {set_of_points[idx_max], left_point};
+        Line right = {set_of_points[idx_max], right_point};
+        // quick hull for the line on the left of the current baseline
+        QuickHull(set_of_points, n, left, -FindPosition(left, right_point));
+        // quick hull for the line on the right of the current baseline
+        QuickHull(set_of_points, n, right, -FindPosition(right, left_point));
+    }
 }
 
 void InitializeQuickHull(vector<Point> set_of_points, int n) {
 // initializing the quickhull recursive algorithm; calling the first QuickHull function
     // if there are less than 3 points convex hull cannot be made
-    if (n < 3) {
+    if (n < 2) {
         cout << "No convex hull can be found." << endl;
         return;
     }
-
-    // finding leftmost and rightmost point in the set as baseline
-    int min_x = 0;
-    int max_x = 0;
-    for (int i = 1; i < n; i++) {
-        if (set_of_points[i].first < set_of_points[min_x].first) {
-            min_x = i;
+    else {
+        // finding leftmost and rightmost point in the set as baseline
+        int min_x = 0;
+        int max_x = 0;
+        for (int i = 1; i < n; i++) {
+            if (set_of_points[i].first < set_of_points[min_x].first) {
+                min_x = i;
+            }
+            if (set_of_points[i].first > set_of_points[max_x].first) {
+                max_x = i;
+            }
         }
-        if (set_of_points[i].first > set_of_points[max_x].first) {
-            max_x = i;
-        }
+        Line baseline = {set_of_points[min_x], set_of_points[max_x]};
+        QuickHull(set_of_points, n, baseline, RIGHT);
+        QuickHull(set_of_points, n, baseline, LEFT);
     }
-    Line baseline = {set_of_points[min_x], set_of_points[max_x]};
-    QuickHull(set_of_points, n, baseline, RIGHT);
-    QuickHull(set_of_points, n, baseline, LEFT);
 }
 
 void PrintHull(vector<Line> hull) {
@@ -175,10 +177,6 @@ void display(void) {
 
     glFlush();
 }
-
-// string PointToString(Point p) {
-//     return "(" + to_string(p.first) + "," + to_string(p.second) + ")";
-// }
 
 /*** MAIN ***/
 int main(int argc, char **argv) {
