@@ -23,8 +23,8 @@ using namespace std;
 #define ON_LINE 0
 
 // Defining Point type as pair of integers and Line as pair of Point
-#define Point pair<int, int>
-#define Line pair<Point, Point>
+typedef pair<int, int> Point;
+typedef pair<Point, Point> Line;
 /* 
  * Example:
  * Point P = {x, y}
